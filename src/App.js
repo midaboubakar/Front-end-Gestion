@@ -31,7 +31,7 @@ export default function App() {
         } />
         <Route path="/championnats" element={
           <PrivateRoute>
-            <ChampionnatPage />
+      <ChampionnatPage onSelectChampionnat={(champ) => console.log("Sélectionné :", champ)} />
           </PrivateRoute>
         } />
         <Route path="/classements" element={

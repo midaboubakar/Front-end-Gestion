@@ -1,40 +1,87 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function EquipeForm({ onSubmit }) {
-  const [formData, setFormData] = useState({ nom: "", pays: "" });
+export default function EquipeForm({ initialData = {}, onSubmit }) {
+  const [nom, setNom] = useState("");
+  const [ville, setVille] = useState("");
+  const [entraineur, setEntraineur] = useState("");
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  useEffect(() => {
+    if (initialData) {
+      setNom(initialData.nom || "");
+      setVille(initialData.ville || "");
+      setEntraineur(initialData.entraineur || "");
+    }
+  }, [initialData]);
 
-  const handleSubmit = (e) => {
+  function handleSubmit(e) {
     e.preventDefault();
-    if (!formData.nom.trim()) return;
+    if (!nom.trim()) {
+      alert("Le nom est obligatoire");
+      return;
+    }
 
-    onSubmit(formData);
-    setFormData({ nom: "", pays: "" });
-  };
+    const formData = { nom, ville, entraineur };
+    onSubmit(formData); // Appelle la fonction passée en prop
+  }
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: "1rem" }}>
-      <input
-        type="text"
-        name="nom"
-        placeholder="Nom de l'équipe"
-        value={formData.nom}
-        onChange={handleChange}
-        required
-        style={{ marginRight: "10px" }}
-      />
-      <input
-        type="text"
-        name="pays"
-        placeholder="Pays"
-        value={formData.pays}
-        onChange={handleChange}
-        style={{ marginRight: "10px" }}
-      />
-      <button type="submit">Ajouter Équipe</button>
+    <form onSubmit={handleSubmit} style={styles.form}>
+      <h3>{initialData._id ? "Modifier l'équipe" : "Ajouter une équipe"}</h3>
+      <div style={styles.field}>
+        <label>Nom de l'équipe:</label>
+        <input
+          type="text"
+          value={nom}
+          onChange={(e) => setNom(e.target.value)}
+          required
+        />
+      </div>
+
+      <div style={styles.field}>
+        <label>Ville:</label>
+        <input
+          type="text"
+          value={ville}
+          onChange={(e) => setVille(e.target.value)}
+        />
+      </div>
+
+      <div style={styles.field}>
+        <label>Entraîneur:</label>
+        <input
+          type="text"
+          value={entraineur}
+          onChange={(e) => setEntraineur(e.target.value)}
+        />
+      </div>
+
+      <button type="submit" style={styles.button}>
+        {initialData._id ? "Mettre à jour" : "Créer"}
+      </button>
     </form>
   );
 }
+
+const styles = {
+  form: {
+    border: "1px solid #ccc",
+    padding: "1rem",
+    borderRadius: "8px",
+    marginBottom: "2rem",
+    maxWidth: "400px",
+    background: "#f9f9f9",
+  },
+  field: {
+    marginBottom: "1rem",
+    display: "flex",
+    flexDirection: "column",
+  },
+  button: {
+    backgroundColor: "#007bff",
+    color: "#fff",
+    padding: "0.5rem 1rem",
+    border: "none",
+    borderRadius: "4px",
+    cursor: "pointer",
+  },
+};

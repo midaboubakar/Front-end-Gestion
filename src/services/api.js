@@ -1,10 +1,11 @@
 import axios from "axios";
 
+// Création de l'instance Axios
 const API = axios.create({
-  baseURL: "http://localhost:5000/api", // À adapter si ton backend est déployé ailleurs
+  baseURL: "http://localhost:5000/api", // Adresse de ton backend local
 });
 
-// Intercepteur pour inclure le token dans les headers
+// Intercepteur pour inclure le token dans les requêtes
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -19,14 +20,15 @@ export async function login(email, password) {
   return res.data;
 }
 
+export async function sendPasswordResetEmail(email) {
+  console.log(`Envoi du mail de réinitialisation à : ${email}`);
+  return Promise.resolve(); // Simulation d'envoi
+}
+
 /* ---------- CHAMPIONNATS ---------- */
 export async function getChampionnats() {
   const res = await API.get("/championnats");
   return res.data;
-}
-export async function sendPasswordResetEmail(email) {
-  console.log(`Envoi du mail de réinitialisation à : ${email}`);
-  return Promise.resolve(); // Simulation d'un appel réussi
 }
 
 export async function addChampionnat(nom) {
@@ -61,7 +63,7 @@ export async function addMatch(championnatId, data) {
   return res.data;
 }
 
-/* ---------- JOUEURS (SI DISPONIBLE) ---------- */
+/* ---------- JOUEURS ---------- */
 export async function getJoueurs(equipeId) {
   const res = await API.get(`/joueurs?equipe=${equipeId}`);
   return res.data;

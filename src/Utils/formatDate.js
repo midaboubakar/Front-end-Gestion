@@ -1,6 +1,21 @@
-// src/utils/formatDate.js
+// Formate une date en format français lisible
+export function formatDate(dateStr) {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString("fr-FR", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+}
 
-export function formatDate(dateString) {
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  return new Date(dateString).toLocaleDateString("fr-FR", options);
+// Formate une date et heure
+export function formatDateTime(dateStr) {
+  const date = new Date(dateStr);
+  return date.toLocaleString("fr-FR", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }

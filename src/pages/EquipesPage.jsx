@@ -1,47 +1,55 @@
-import { useState, useEffect } from "react";
-import { getEquipes, addEquipe } from "../services/api";
-import EquipeCard from "../components/EquipeCard";
+import { useEffect, useState } from "react";
 import EquipeForm from "../components/EquipeForm";
+import { getEquipes, addEquipe } from "../services/api";
+import EquipeCard from "../components/EquipeCard"; // à créer si pas encore fait
 
-export default function EquipePage({ championnatId }) {
+export default function EquipesPage() {
   const [equipes, setEquipes] = useState([]);
+  const [selectedChampId] = useState(null); // exemple fixe ou récupéré dynamiquement
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetch() {
+    async function fetchEquipes() {
+      setLoading(true);
       try {
-        setLoading(true);
-        const data = await getEquipes(championnatId);
+        const data = await getEquipes(selectedChampId);
         setEquipes(data);
-      } catch {
-        setError("Erreur chargement équipes");
+      } catch (err) {
+        console.error("Erreur chargement équipes:", err);
       } finally {
         setLoading(false);
       }
     }
-    if (championnatId) fetch();
-  }, [championnatId]);
+
+    if (selectedChampId) {
+      fetchEquipes();
+    }
+  }, [selectedChampId]);
 
   async function handleAddEquipe(data) {
     try {
-      const newEquipe = await addEquipe(championnatId, data);
-      setEquipes(prev => [...prev, newEquipe]);
+      const newEquipe = await addEquipe(selectedChampId, data);
+      setEquipes((prev) => [...prev, newEquipe]);
     } catch {
-      alert("Erreur ajout équipe");
+      alert("Erreur lors de l'ajout");
     }
   }
 
-  if (loading) return <p>Chargement...</p>;
-  if (error) return <p>{error}</p>;
-
   return (
-    <div>
-      <h2>Équipes</h2>
+    <div style={{ padding: "1rem" }}>
+      <h2>Équipes du championnat</h2>
+
       <EquipeForm onSubmit={handleAddEquipe} />
-      {equipes.map(e => (
-        <EquipeCard key={e._id} equipe={e} />
-      ))}
+
+      {loading ? (
+        <p>Chargement des équipes...</p>
+      ) : (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
+          {equipes.map((equipe) => (
+            <EquipeCard key={equipe._id} equipe={equipe} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,23 +1,25 @@
-// src/utils/auth.js
+// Vérifie si l'utilisateur est authentifié
 export function isAuthenticated() {
   return !!localStorage.getItem("token");
 }
 
-export function logout() {
-  localStorage.removeItem("token");
-  window.location.href = "/login"; // redirige après logout
-}
-
+// Récupère les infos de l'utilisateur à partir du token (optionnel si tu stockes des infos dans le token)
 export function getUserInfo() {
-  // Extrait des infos basiques depuis le localStorage
-  try {
-    const token = localStorage.getItem("token");
-    if (!token) return null;
+  const token = localStorage.getItem("token");
+  if (!token) return null;
 
-    // Si tu stockes un JWT, tu pourrais le décoder ici (ex : avec jwt-decode)
-    // Mais pour l’instant, supposons que tu stockes juste l’e-mail
-    return JSON.parse(atob(token.split(".")[1])); // à adapter selon ton back
-  } catch (e) {
+  try {
+    // Si le token est un JWT : décodage basique
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload;
+  } catch (error) {
+    console.error("Erreur de décodage du token :", error);
     return null;
   }
+}
+
+// Déconnecte l'utilisateur
+export function logout() {
+  localStorage.removeItem("token");
+  window.location.href = "/login"; // Redirige vers la page de connexion
 }

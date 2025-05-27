@@ -1,57 +1,99 @@
+// src/pages/ClassementsPage.jsx
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getClassement } from "../services/api";
+import { getChampionnats, getClassement } from "../services/api";
 
 export default function ClassementsPage() {
-  const { id } = useParams();
+  const [championnats, setChampionnats] = useState([]);
+  const [selectedChampionnatId, setSelectedChampionnatId] = useState("");
   const [classement, setClassement] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
 
+  // Charger la liste des championnats au montage
   useEffect(() => {
-    const fetchClassement = async () => {
+    async function fetchChampionnats() {
+      try {
+        const data = await getChampionnats();
+        setChampionnats(data);
+      } catch (err) {
+        setError("Erreur de chargement des championnats");
+      }
+    }
+    fetchChampionnats();
+  }, []);
+
+  // Charger le classement quand un championnat est sélectionné
+  useEffect(() => {
+    if (!selectedChampionnatId) return;
+    async function fetchClassement() {
       setLoading(true);
       try {
-        const data = await getClassement(id);
+        const data = await getClassement(selectedChampionnatId);
         setClassement(data);
-      } catch (err) {
-        setError("Erreur lors de la récupération du classement.");
-        console.error(err);
+        setError("");
+      } catch {
+        setError("Erreur lors du chargement du classement");
       } finally {
         setLoading(false);
       }
-    };
-
+    }
     fetchClassement();
-  }, [id]);
+  }, [selectedChampionnatId]);
 
   return (
-    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-      <h2>Classement</h2>
-      {loading && <p aria-live="polite">Chargement en cours...</p>}
-      {error && <p style={{ color: 'red' }} aria-live="assertive">{error}</p>}
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr>
-            <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Équipe</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Points</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>V</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>D</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>N</th>
-          </tr>
-        </thead>
-        <tbody>
-          {classement.map((equipe, i) => (
-            <tr key={i} style={{ backgroundColor: i % 2 === 0 ? '#f9f9f9' : 'white' }}>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{equipe.nom}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{equipe.points}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{equipe.victoires}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{equipe.defaites}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{equipe.nuls}</td>
-            </tr>
+    <div>
+      <h2>Classements</h2>
+
+      {/* Sélection d’un championnat */}
+      <label>
+        Choisir un championnat :
+        <select
+          value={selectedChampionnatId}
+          onChange={(e) => setSelectedChampionnatId(e.target.value)}
+        >
+          <option value="">-- Sélectionner --</option>
+          {championnats.map((c) => (
+            <option key={c._id} value={c._id}>
+              {c.nom}
+            </option>
           ))}
-        </tbody>
-      </table>
+        </select>
+      </label>
+
+      {loading && <p>Chargement du classement...</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      {/* Affichage du classement */}
+      {classement.length > 0 && (
+        <table border="1" cellPadding="8" style={{ marginTop: "1rem" }}>
+          <thead>
+            <tr>
+              <th>Position</th>
+              <th>Équipe</th>
+              <th>Points</th>
+              <th>Matchs joués</th>
+              <th>Victoires</th>
+              <th>Défaites</th>
+              <th>Nuls</th>
+              <th>Différence de buts</th>
+            </tr>
+          </thead>
+          <tbody>
+            {classement.map((equipe, index) => (
+              <tr key={equipe.equipeId}>
+                <td>{index + 1}</td>
+                <td>{equipe.nom}</td>
+                <td>{equipe.points}</td>
+                <td>{equipe.matchsJoues}</td>
+                <td>{equipe.victoires}</td>
+                <td>{equipe.defaites}</td>
+                <td>{equipe.nuls}</td>
+                <td>{equipe.diff}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }

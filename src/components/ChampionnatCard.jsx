@@ -1,11 +1,16 @@
 // src/components/ChampionnatCard.jsx
-import React from "react";
-
-export default function ChampionnatCard({ championnat }) {
+export default function ChampionnatCard({ championnat, onSelect }) {
   return (
-    <div style={{ border: "1px solid #ccc", padding: "1rem", marginBottom: "1rem" }}>
-      <h3>{championnat.nom}</h3>
-      <p>ID: {championnat._id}</p>
+    <div
+      onClick={onSelect}
+      style={{
+        border: "1px solid #ccc",
+        padding: "10px",
+        marginBottom: "10px",
+        cursor: "pointer"
+      }}
+    >
+      <h4>{championnat.nom}</h4>
     </div>
   );
 }
