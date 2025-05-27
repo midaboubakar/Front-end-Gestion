@@ -1,0 +1,193 @@
+/* Reset global */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Montserrat', sans-serif;
+  background: linear-gradient(135deg, #1e3c72, #2a5298); /* Remplace fond fade par un fond sport dynamique */
+  color: #fff;
+}
+
+/* Import police */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+.App {
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Header principal */
+.App-header {
+  background: url('/public/images/football-field.jpg') center/cover no-repeat, linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  background-blend-mode: overlay;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.App-header h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+.App-header p {
+  font-size: 1.25rem;
+  max-width: 600px;
+}
+
+.App-header {
+  background: url('/public/images/football-field.jpg') center/cover no-repeat, linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block !important;
+  }
+  nav {
+    display: flex !important;
+    flex-direction: column !important;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.85);
+    padding: 1rem 2rem;
+    border-radius: 0 0 8px 8px;
+    z-index: 10;
+  }
+}
+
+
+/* Logo animé */
+.App-logo {
+  height: 35vmin;
+  pointer-events: none;
+  transition: transform 0.3s ease-in-out;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
+}
+
+.App-logo:hover {
+  transform: scale(1.05);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin 20s linear infinite;
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Boutons et liens */
+.App-link, .login-form button {
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  padding: 0.75rem 1.25rem;
+  text-decoration: none;
+  border-radius: 8px;
+  border: none;
+  display: inline-block;
+  margin-top: 1rem;
+  transition: 0.3s ease;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.5);
+}
+
+.App-link:hover, .login-form button:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+/* Login */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
+  padding: 2rem;
+}
+
+.login-form {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 100%;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-form h2 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #2a5298;
+}
+
+.login-form input {
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  font-size: 1rem;
+  transition: 0.3s ease;
+}
+
+.login-form input:focus {
+  border-color: #28a745;
+  outline: none;
+  box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+}
+
+.login-form button {
+  margin-top: 1rem;
+}
+
+.login-form a {
+  text-align: center;
+  color: #2a5298;
+  text-decoration: none;
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
+.login-form a:hover {
+  text-decoration: underline;
+}
+
+/* Erreurs */
+.error {
+  color: #d32f2f;
+  background-color: rgba(255, 0, 0, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Info utilisateur */
+.user-info {
+  margin-left: 1rem;
+  font-weight: 500;
+  color: #fff;
+}

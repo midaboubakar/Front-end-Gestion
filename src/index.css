@@ -1,0 +1,139 @@
+/* --- Reset + Typographie de base --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Helvetica Neue', sans-serif;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  color: #fff;
+  line-height: 1.6;
+  font-size: 16px;
+  padding: 20px;
+  min-height: 100vh;
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+/* --- Liens --- */
+a {
+  color: #ffcb05;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+a:hover,
+a:focus {
+  text-decoration: underline;
+  color: #ffe066;
+}
+
+/* --- Inputs & boutons --- */
+input,
+button,
+select,
+textarea {
+  font: inherit;
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  margin: 0.5rem 0;
+  transition: all 0.3s ease;
+}
+
+input,
+textarea,
+select {
+  background-color: #f9f9f9;
+  color: #222;
+  border-color: #28a745;
+  box-shadow: 0 0 5px rgba(40, 167, 69, 0.3);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #34ce57;
+  box-shadow: 0 0 10px rgba(52, 206, 87, 0.6);
+  outline: none;
+}
+
+button {
+  background-color: #ff9f1c;
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255, 159, 28, 0.4);
+  transition: background-color 0.3s, transform 0.2s ease, box-shadow 0.3s;
+}
+
+button:hover,
+button:focus {
+  background-color: #e88b00;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 159, 28, 0.5);
+}
+
+/* --- Titres --- */
+h1, h2, h3, h4 {
+  margin-bottom: 1rem;
+  color: #fff;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.5px;
+}
+
+h1::before {
+  content: "⚽ ";
+}
+
+/* --- Listes stylisées --- */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  padding: 0.8rem 1.2rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-left: 5px solid #28a745;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+li:hover {
+  background-color: rgba(40, 167, 69, 0.2);
+  transform: translateX(5px);
+}
+
+/* --- Conteneurs réactifs --- */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* --- Responsive helper --- */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  .container {
+    padding: 1rem;
+  }
+
+  input,
+  button {
+    width: 100%;
+  }
+}
