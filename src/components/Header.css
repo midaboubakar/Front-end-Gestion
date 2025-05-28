@@ -6,11 +6,17 @@
   background: linear-gradient(135deg, #4a6fa5, #2d466b);
   color: #fff;
   flex-wrap: wrap;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .logo {
-  font-size: 1.5rem;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  cursor: default;
 }
 
 .nav {
@@ -26,12 +32,18 @@
   padding: 0.5rem 1rem;
   border-radius: 4px;
   transition: background-color 0.3s ease;
+  font-weight: 500;
+}
+
+.link:hover {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .user-info {
   margin-left: 1rem;
-  font-weight: 500;
-  color: #ffe;
+  font-weight: 600;
+  color: #ffecb3; /* plus doux que #ffe */
+  white-space: nowrap;
 }
 
 .button {
@@ -41,7 +53,17 @@
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: 600;
   transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #b71c1c;
+}
+
+/* Transition smooth for all interactive elements */
+body, .header, .link, .button {
+  transition: all 0.3s ease;
 }
 
 /* Responsive */
@@ -49,6 +71,7 @@
   .header {
     flex-direction: column;
     align-items: flex-start;
+    padding: 1rem;
   }
 
   .nav {
@@ -62,5 +85,10 @@
   .link, .button {
     width: 100%;
     text-align: left;
+  }
+
+  .user-info {
+    margin-left: 0;
+    padding-top: 0.5rem;
   }
 }

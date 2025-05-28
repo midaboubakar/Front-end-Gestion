@@ -8,7 +8,7 @@ export default function JoueursPage({ equipeId }) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!equipeId) return; // Pas d'équipe sélectionnée
+    if (!equipeId) return;
 
     async function fetchJoueurs() {
       try {
@@ -25,17 +25,55 @@ export default function JoueursPage({ equipeId }) {
     fetchJoueurs();
   }, [equipeId]);
 
-  if (!equipeId) return <p>Sélectionnez une équipe pour voir ses joueurs.</p>;
-  if (loading) return <p>Chargement des joueurs...</p>;
-  if (error) return <p>{error}</p>;
+  // 🎨 Styles
+  const styles = {
+    container: {
+      padding: "1rem",
+      fontFamily: "Arial, sans-serif",
+    },
+    title: {
+      fontSize: "1.8rem",
+      marginBottom: "1rem",
+    },
+    message: {
+      fontStyle: "italic",
+      color: "#555",
+    },
+    error: {
+      color: "red",
+      fontWeight: "bold",
+    },
+    grid: {
+      display: "flex",
+      flexWrap: "wrap",
+      gap: "1rem",
+      marginTop: "1rem",
+    }
+  };
+
+  if (!equipeId) {
+    return <p style={styles.message}>⚠️ Sélectionnez une équipe pour voir ses joueurs.</p>;
+  }
+
+  if (loading) {
+    return <p style={styles.message}>⏳ Chargement des joueurs...</p>;
+  }
+
+  if (error) {
+    return <p style={styles.error}>{error}</p>;
+  }
 
   return (
-    <div>
-      <h2>Joueurs de l'équipe</h2>
+    <div style={styles.container}>
+      <h2 style={styles.title}>👥 Joueurs de l'équipe</h2>
       {joueurs.length === 0 ? (
-        <p>Aucun joueur trouvé.</p>
+        <p style={styles.message}>Aucun joueur trouvé.</p>
       ) : (
-        joueurs.map(joueur => <JoueurCard key={joueur._id} joueur={joueur} />)
+        <div style={styles.grid}>
+          {joueurs.map(joueur => (
+            <JoueurCard key={joueur._id} joueur={joueur} />
+          ))}
+        </div>
       )}
     </div>
   );

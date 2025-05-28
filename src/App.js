@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import ForgotPassword from "./pages/ForgotPasswordPage";
@@ -8,57 +9,51 @@ import EquipesPage from "./pages/EquipesPage";
 import JoueursPage from "./pages/JoueursPage";
 import MatchsPage from "./pages/MatchsPage";
 import NotFoundPage from "./pages/NotFoundPage";
-import PrivateRoute from "./components/PrivateRoute";
 import Header from "./components/Header";
-import Footer from "./components/Footer";  // <-- importer footer
-
+import Footer from "./components/Footer";
 
 export default function App() {
+  const [token, setToken] = useState(localStorage.getItem("token"));
+
+  const handleLogin = (newToken) => {
+    localStorage.setItem("token", newToken);
+    setToken(newToken);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+  };
+
   return (
     <Router>
-      <Header /> {/* Header visible partout */}
+      <Header onLogout={handleLogout} />
 
       <Routes>
         {/* Routes publiques */}
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
-        {/* Routes protégées (nécessitent authentification) */}
-        <Route path="/" element={
-          <PrivateRoute>
-            <HomePage />
-          </PrivateRoute>
-        } />
-        <Route path="/championnats" element={
-          <PrivateRoute>
-      <ChampionnatPage onSelectChampionnat={(champ) => console.log("Sélectionné :", champ)} />
-          </PrivateRoute>
-        } />
-        <Route path="/classements" element={
-          <PrivateRoute>
-            <ClassementsPage />
-          </PrivateRoute>
-        } />
-        <Route path="/equipes" element={
-          <PrivateRoute>
-            <EquipesPage />
-          </PrivateRoute>
-        } />
-        <Route path="/joueurs" element={
-          <PrivateRoute>
-            <JoueursPage />
-          </PrivateRoute>
-        } />
-        <Route path="/matchs" element={
-          <PrivateRoute>
-            <MatchsPage />
-          </PrivateRoute>
-        } />
+        {/* Pages normales accessibles sans authentification */}
+        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/championnats"
+          element={
+            <ChampionnatPage
+              onSelectChampionnat={(champ) => console.log("Sélectionné :", champ)}
+            />
+          }
+        />
+        <Route path="/classements" element={<ClassementsPage />} />
+        <Route path="/equipes" element={<EquipesPage />} />
+        <Route path="/joueurs" element={<JoueursPage />} />
+        <Route path="/matchs" element={<MatchsPage />} />
 
         {/* Page 404 */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
-            <Footer />  {/* Affiché partout */}
+
+      <Footer />
     </Router>
   );
 }

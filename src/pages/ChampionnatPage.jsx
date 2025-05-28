@@ -1,67 +1,87 @@
-// src/pages/ChampionnatPage.jsx
-import { useEffect, useState } from "react";
-import { getChampionnats, addChampionnat } from "../services/api";
-import ChampionnatCard from "../components/ChampionnatCard";
+import React, { useEffect, useState } from "react";
+import { getChampionnats } from "../services/api";
 
-export default function ChampionnatPage({ onSelectChampionnat }) {
+const styles = {
+  container: {
+    padding: '2rem',
+    maxWidth: '800px',
+    margin: '0 auto',
+    background: '#ffffff',
+    borderRadius: '16px',
+    boxShadow: '0 8px 20px rgba(0, 0, 0, 0.1)',
+    color: '#333',
+  },
+  h2: {
+    fontSize: '2rem',
+    textAlign: 'center',
+    marginBottom: '1.5rem',
+    color: '#4a6fa5',
+  },
+  list: {
+    listStyle: 'none',
+    padding: '0',
+  },
+  listItem: {
+    padding: '12px 16px',
+    marginBottom: '10px',
+    backgroundColor: '#f8f9fa',
+    borderRadius: '8px',
+    boxShadow: 'inset 0 0 5px rgba(0, 0, 0, 0.1)',
+    fontWeight: '600',
+    cursor: 'pointer',
+    transition: 'background-color 0.3s ease',
+  },
+  listItemHover: {
+    backgroundColor: '#e9ecef',
+  },
+};
+
+function ChampionnatPage() {
   const [championnats, setChampionnats] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [nouveauNom, setNouveauNom] = useState("");
+  const [hoveredIndex, setHoveredIndex] = useState(null); // pour gérer l'hover
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        setLoading(true);
-        const data = await getChampionnats();
+    getChampionnats()
+      .then(data => {
         setChampionnats(data);
-      } catch (err) {
-        setError("Erreur lors du chargement des championnats");
-      } finally {
         setLoading(false);
-      }
-    }
-    fetchData();
+      })
+      .catch(err => {
+        console.error("Erreur de chargement :", err);
+        setError("Erreur de chargement des championnats");
+        setLoading(false);
+      });
   }, []);
 
-  async function handleAddChampionnat(e) {
-    e.preventDefault();
-    if (!nouveauNom.trim()) return;
-
-    try {
-      const newChamp = await addChampionnat(nouveauNom);
-      setChampionnats(prev => [...prev, newChamp]);
-      setNouveauNom("");
-    } catch {
-      alert("Erreur lors de l'ajout");
-    }
-  }
-
-  if (loading) return <p>Chargement...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <div style={styles.container}>Chargement en cours...</div>;
+  if (error) return <div style={styles.container}>{error}</div>;
 
   return (
-    <div>
-      <h2>Liste des championnats</h2>
-
-      <form onSubmit={handleAddChampionnat} style={{ marginBottom: "1rem" }}>
-        <input
-          type="text"
-          placeholder="Nom nouveau championnat"
-          value={nouveauNom}
-          onChange={e => setNouveauNom(e.target.value)}
-          required
-        />
-        <button type="submit">Ajouter</button>
-      </form>
-
-      {championnats.map(c => (
-        <ChampionnatCard
-          key={c._id}
-          championnat={c}
-          onSelect={() => onSelectChampionnat(c)}
-        />
-      ))}
+    <div style={styles.container}>
+      <h2 style={styles.h2}>Liste des championnats</h2>
+      <ul style={styles.list}>
+        {championnats.length > 0 ? (
+          championnats.map((c, i) => (
+            <li
+              key={c.id}
+              style={{
+                ...styles.listItem,
+                backgroundColor: hoveredIndex === i ? styles.listItemHover.backgroundColor : styles.listItem.backgroundColor,
+              }}
+              onMouseEnter={() => setHoveredIndex(i)}
+              onMouseLeave={() => setHoveredIndex(null)}
+            >
+              {c.nom}
+            </li>
+          ))
+        ) : (
+          <p>Aucun championnat trouvé.</p>
+        )}
+      </ul>
     </div>
   );
 }
+
+export default ChampionnatPage;
