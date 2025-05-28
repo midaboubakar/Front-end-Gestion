@@ -42,6 +42,9 @@ export default function LoginPage({ onLogin }) {
         <p className="forgot-password">
           <Link to="/forgot-password">Mot de passe oublié ?</Link>
         </p>
+        <p className="forgot-password">
+          <Link to="/signup">Pas encore de compte ? Créer un compte</Link>
+        </p>
       </form>
     </div>
   );

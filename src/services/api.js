@@ -79,3 +79,18 @@ export async function addJoueur(equipeId, data) {
   const res = await API.post("/joueurs", { ...data, equipeId });
   return res.data;
 }
+
+/*---------sign up ----------------- */
+export async function signup(email, password) {
+  const res = await fetch("http://localhost:3000/api/signup", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+
+  if (!res.ok) {
+    throw new Error("Erreur lors de la création du compte");
+  }
+
+  return await res.json();
+}

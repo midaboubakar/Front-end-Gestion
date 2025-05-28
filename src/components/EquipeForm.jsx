@@ -21,37 +21,43 @@ export default function EquipeForm({ initialData = {}, onSubmit }) {
     }
 
     const formData = { nom, ville, entraineur };
-    onSubmit(formData); // Appelle la fonction passée en prop
+    onSubmit(formData);
   }
 
   return (
     <form onSubmit={handleSubmit} style={styles.form}>
-      <h3>{initialData._id ? "Modifier l'équipe" : "Ajouter une équipe"}</h3>
+      <h3 style={styles.title}>
+        {initialData._id ? "Modifier l'équipe" : "Ajouter une équipe"}
+      </h3>
+
       <div style={styles.field}>
-        <label>Nom de l'équipe:</label>
+        <label style={styles.label}>Nom de l'équipe:</label>
         <input
           type="text"
           value={nom}
           onChange={(e) => setNom(e.target.value)}
           required
+          style={styles.input}
         />
       </div>
 
       <div style={styles.field}>
-        <label>Ville:</label>
+        <label style={styles.label}>Ville:</label>
         <input
           type="text"
           value={ville}
           onChange={(e) => setVille(e.target.value)}
+          style={styles.input}
         />
       </div>
 
       <div style={styles.field}>
-        <label>Entraîneur:</label>
+        <label style={styles.label}>Entraîneur:</label>
         <input
           type="text"
           value={entraineur}
           onChange={(e) => setEntraineur(e.target.value)}
+          style={styles.input}
         />
       </div>
 
@@ -64,24 +70,56 @@ export default function EquipeForm({ initialData = {}, onSubmit }) {
 
 const styles = {
   form: {
-    border: "1px solid #ccc",
-    padding: "1rem",
-    borderRadius: "8px",
+    border: "1px solid rgba(255, 255, 255, 0.2)",
+    padding: "2rem",
+    borderRadius: "12px",
     marginBottom: "2rem",
-    maxWidth: "400px",
-    background: "#f9f9f9",
+    maxWidth: "600px",
+    width: "100%",
+    backgroundColor: "transparent",
+    color: "#fff",
+    boxShadow: "0 0 10px rgba(255, 255, 255, 0.1)",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "stretch",
+    margin: "0 auto",
+  },
+  title: {
+    marginBottom: "1.5rem",
+    fontSize: "1.5rem",
+    textAlign: "center",
   },
   field: {
-    marginBottom: "1rem",
+    marginBottom: "1.5rem",
     display: "flex",
     flexDirection: "column",
   },
-  button: {
-    backgroundColor: "#007bff",
+  label: {
+    marginBottom: "0.5rem",
+    fontSize: "1rem",
+  },
+  input: {
+    backgroundColor: "transparent",
     color: "#fff",
-    padding: "0.5rem 1rem",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
+    border: "1px solid rgba(255, 255, 255, 0.3)",
+    padding: "0.75rem",
+    borderRadius: "6px",
+    fontSize: "1rem",
+  },
+  button: {
+  backgroundColor: "#007bff",
+  color: "#fff",
+  padding: "1rem 2rem",          // ↑ plus de hauteur et largeur
+  fontSize: "1.1rem",            // ↑ texte plus lisible
+  fontWeight: "bold",
+  border: "none",
+  borderRadius: "8px",
+  cursor: "pointer",
+  alignSelf: "center",           // ← centré horizontalement
+  width: "80%",                  // ← large mais pas 100%
+  maxWidth: "300px",             // ← limite la taille sur grands écrans
+  textAlign: "center",
+  boxShadow: "0 4px 10px rgba(0, 123, 255, 0.3)", // ombre douce
+  transition: "background 0.3s",
   },
 };

@@ -134,7 +134,7 @@ export default function Header({ onLogout }) {
         ) : (
           <>
             <Link to="/login" style={styles.link}>🔐 Connexion</Link>
-            <Link to="/forgot-password" style={styles.link}>❓ Mot de passe oublié</Link>
+           {/*<Link to="/forgot-password" style={styles.link}>❓ Mot de passe oublié</Link>*/} 
           </>
         )}
       </nav>
@@ -158,7 +158,7 @@ export default function Header({ onLogout }) {
             ) : (
               <>
                 <Link to="/login" style={styles.link} onClick={() => setMenuOpen(false)}>🔐 Connexion</Link>
-                <Link to="/forgot-password" style={styles.link} onClick={() => setMenuOpen(false)}>❓ Mot de passe oublié</Link>
+                {/*<Link to="/forgot-password" style={styles.link} onClick={() => setMenuOpen(false)}>❓ Mot de passe oublié</Link> */}
               </>
             )}
           </>
