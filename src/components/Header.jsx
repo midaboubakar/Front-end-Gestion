@@ -124,7 +124,7 @@ export default function Header({ onLogout }) {
         <Link to="/equipes" style={styles.link}>👥 Équipes</Link>
         <Link to="/matchs" style={styles.link}>⚽ Matchs</Link>
         <Link to="/classements" style={styles.link}>📊 Classements</Link>
-        <Link to="/joueurs" style={styles.link}>🎯 Joueurs</Link>
+       {/* <Link to="/joueurs" style={styles.link}>🎯 Joueurs</Link>*/}
 
         {isAuthenticated() ? (
           <>

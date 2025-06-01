@@ -1,0 +1,52 @@
+.equipes-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  max-width: 960px;
+  margin: 0 auto;
+ /* background-color: #1c1c1e;*/
+  color: #ffffff;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+}
+
+.equipes-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.equipes-loading,
+.equipes-empty {
+  font-size: 1.2rem;
+  color: #bdc3c7;
+  margin-top: 1rem;
+}
+
+.equipes-error {
+  font-size: 1.2rem;
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+.equipes-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .equipes-title {
+    font-size: 1.8rem;
+  }
+
+  .equipes-container {
+    padding: 1rem;
+  }
+}

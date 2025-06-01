@@ -67,20 +67,19 @@ select:focus {
 }
 
 button {
-  background-color: #ff9f1c;
+  background-color:#27ae60;
   color: #fff;
   font-weight: 700;
   border: none;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(255, 159, 28, 0.4);
+  /*box-shadow: 0 4px 12px rgba(255, 159, 28, 0.4);*/
   transition: background-color 0.3s, transform 0.2s ease, box-shadow 0.3s;
 }
 
 button:hover,
 button:focus {
-  background-color: #e88b00;
+  /*background-color: #e88b00;*/
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(255, 159, 28, 0.5);
 }
 
 /* --- Titres --- */

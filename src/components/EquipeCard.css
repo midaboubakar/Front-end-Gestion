@@ -1,0 +1,37 @@
+.equipe-card {
+  background-color: #2c3e50;
+  color: #ecf0f1;
+  border-radius: 12px;
+  padding: 1rem;
+  width: 220px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.equipe-card:hover {
+  transform: scale(1.03);
+}
+
+.equipe-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 50%;
+  margin-bottom: 0.8rem;
+  background-color: #ffffff;
+  padding: 4px;
+}
+
+.equipe-nom {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+.equipe-stade,
+.equipe-date {
+  font-size: 0.9rem;
+  margin: 0.2rem 0;
+  color: #bdc3c7;
+}

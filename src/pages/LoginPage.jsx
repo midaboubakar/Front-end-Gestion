@@ -1,12 +1,23 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { login } from "../services/api";
-import "./LoginPage.css"; // <-- ajoute ce fichier CSS
+import { useTranslation } from "react-i18next";
+import { login } from "../services/api";  // Ta fonction API de login
+import "./LoginPage.css";
 
 export default function LoginPage({ onLogin }) {
+  const { t, i18n } = useTranslation();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // Changer la langue entre 'fr' et 'en'
+  const toggleLanguage = () => {
+    const nextLang = i18n.language === "fr" ? "en" : "fr";
+    console.log("Changement langue vers", nextLang);
+    i18n.changeLanguage(nextLang);
+  };
+
+  // Gestion du submit du formulaire
   async function handleSubmit(e) {
     e.preventDefault();
     try {
@@ -14,36 +25,45 @@ export default function LoginPage({ onLogin }) {
       localStorage.setItem("token", data.token);
       onLogin(data.token);
     } catch (err) {
-      alert("Identifiants invalides");
+      alert(t("invalid_credentials"));
     }
   }
 
   return (
     <div className="login-wrapper">
       <form className="login-form" onSubmit={handleSubmit}>
-        <h2>Connexion</h2>
+        {/* Bouton pour changer la langue */}
+        <button onClick={toggleLanguage}>
+        {i18n.language === 'fr' ? 'English' : 'Français'}
+      </button>
+
+        <h2>{t("login")}</h2>
+
         <input
           type="email"
           className="login-input"
           value={email}
-          onChange={e => setEmail(e.target.value)}
-          placeholder="Adresse email"
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder={t("email")}
           required
         />
         <input
           type="password"
           className="login-input"
           value={password}
-          onChange={e => setPassword(e.target.value)}
-          placeholder="Mot de passe"
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder={t("password")}
           required
         />
-        <button className="login-button" type="submit">Se connecter</button>
+        <button className="login-button" type="submit">
+          {t("submit")}
+        </button>
+
         <p className="forgot-password">
-          <Link to="/forgot-password">Mot de passe oublié ?</Link>
+          <Link to="/forgot-password">{t("forgot_password")}</Link>
         </p>
         <p className="forgot-password">
-          <Link to="/signup">Pas encore de compte ? Créer un compte</Link>
+          <Link to="/signup">{t("no_account")}</Link>
         </p>
       </form>
     </div>

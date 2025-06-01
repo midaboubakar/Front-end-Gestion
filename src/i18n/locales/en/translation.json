@@ -1,0 +1,9 @@
+{
+  "login": "Login",
+  "email": "Email address",
+  "password": "Password",
+  "submit": "Sign in",
+  "forgot_password": "Forgot password?",
+  "no_account": "No account yet? Create one",
+  "invalid_credentials": "Invalid credentials"
+}

@@ -1,3 +1,6 @@
+/*
+
+
 import { useEffect, useState } from "react";
 import { getJoueurs } from "../services/api";
 import JoueurCard from "../components/JoueurCard";
@@ -78,3 +81,4 @@ export default function JoueursPage({ equipeId }) {
     </div>
   );
 }
+  */
