@@ -1,9 +1,9 @@
 {
   "login": "Connexion",
-  "email": "Adresse email",
+  "email": "Adresse e-mail",
   "password": "Mot de passe",
   "submit": "Se connecter",
   "forgot_password": "Mot de passe oublié ?",
-  "no_account": "Pas encore de compte ? Créer un compte",
+  "no_account": "Pas de compte ? S'inscrire",
   "invalid_credentials": "Identifiants invalides"
 }

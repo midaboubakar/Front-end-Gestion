@@ -1,20 +1,27 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import Backend from 'i18next-http-backend';
-import LanguageDetector from 'i18next-browser-languagedetector';
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+
+// Import des fichiers de traduction (tu peux aussi utiliser un backend pour charger à la volée)
+import translationFR from "./locales/fr/translation.json";
+import translationEN from "./locales/en/translation.json";
+
+const resources = {
+  fr: {
+    translation: translationFR,
+  },
+  en: {
+    translation: translationEN,
+  },
+};
 
 i18n
-  .use(Backend)
-  .use(LanguageDetector)
-  .use(initReactI18next)
+  .use(initReactI18next) // Passer à react-i18next
   .init({
-    fallbackLng: 'fr',
-    debug: true, // passe à true pour voir les logs
+    resources,
+    lng: "fr", // Langue par défaut
+    fallbackLng: "en", // Langue de secours si traduction manquante
     interpolation: {
-      escapeValue: false,
-    },
-    backend: {
-      loadPath: '/locales/{{lng}}/translation.json', // assure-toi que ce chemin est correct
+      escapeValue: false, // React s'occupe de la sécurité
     },
   });
 

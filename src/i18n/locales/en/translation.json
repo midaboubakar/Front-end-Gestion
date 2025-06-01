@@ -2,8 +2,8 @@
   "login": "Login",
   "email": "Email address",
   "password": "Password",
-  "submit": "Sign in",
+  "submit": "Log in",
   "forgot_password": "Forgot password?",
-  "no_account": "No account yet? Create one",
+  "no_account": "No account? Sign up",
   "invalid_credentials": "Invalid credentials"
 }

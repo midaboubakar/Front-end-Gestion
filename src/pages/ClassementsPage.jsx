@@ -1,4 +1,3 @@
-// src/pages/ClassementsPage.jsx
 import { useEffect, useState } from "react";
 import { getChampionnats, getClassement } from "../services/api";
 
@@ -9,12 +8,11 @@ export default function ClassementsPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Charger la liste des championnats au montage
   useEffect(() => {
     async function fetchChampionnats() {
       try {
         const data = await getChampionnats();
-        setChampionnats(data);
+        setChampionnats(data.slice(0, 5));
       } catch (err) {
         setError("Erreur de chargement des championnats");
       }
@@ -22,7 +20,6 @@ export default function ClassementsPage() {
     fetchChampionnats();
   }, []);
 
-  // Charger le classement quand un championnat est sélectionné
   useEffect(() => {
     if (!selectedChampionnatId) return;
     async function fetchClassement() {
@@ -40,59 +37,108 @@ export default function ClassementsPage() {
     fetchClassement();
   }, [selectedChampionnatId]);
 
-  return (
-    <div>
-      <h2>Classements</h2>
+  const styles = {
+    container: {
+      padding: "2rem",
+      maxWidth: "960px",
+      margin: "0 auto",
+      fontFamily: "'Segoe UI', sans-serif",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: "1rem",
+    },
+    title: {
+      fontSize: "2rem",
+      fontWeight: "bold",
+      marginBottom: "0.5rem",
+    },
+    select: {
+      padding: "0.5rem 1rem",
+      fontSize: "1rem",
+      borderRadius: "8px",
+      border: "1px solid #ccc",
+    },
+    tableWrapper: {
+      width: "100%",
+      overflowX: "auto",
+      marginTop: "2rem",
+      borderRadius: "12px",
+      boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+      backgroundColor: "#fff",
+    },
+    table: {
+      width: "100%",
+      borderCollapse: "collapse",
+    },
+    th: {
+      backgroundColor: "#f1f1f1",
+      padding: "12px",
+      fontWeight: "bold",
+      borderBottom: "1px solid #ddd",
+      textAlign: "left",
+    },
+    td: {
+      padding: "10px",
+      borderBottom: "1px solid #eee",
+    },
+    error: {
+      color: "#e74c3c",
+      fontWeight: "bold",
+    },
+  };
 
-      {/* Sélection d’un championnat */}
-      <label>
-        Choisir un championnat :
-        <select
-          value={selectedChampionnatId}
-          onChange={(e) => setSelectedChampionnatId(e.target.value)}
-        >
-          <option value="">-- Sélectionner --</option>
-          {championnats.map((c) => (
-            <option key={c._id} value={c._id}>
-              {c.nom}
-            </option>
-          ))}
-        </select>
-      </label>
+  return (
+    <div style={styles.container}>
+      <h2 style={styles.title}>📊 Classements</h2>
+
+      <select
+        value={selectedChampionnatId}
+        onChange={(e) => setSelectedChampionnatId(e.target.value)}
+        style={styles.select}
+      >
+        <option value="">-- Sélectionner un championnat --</option>
+        {championnats.map((c) => (
+          <option key={c._id} value={c._id}>
+            {c.nom}
+          </option>
+        ))}
+      </select>
 
       {loading && <p>Chargement du classement...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p style={styles.error}>{error}</p>}
 
-      {/* Affichage du classement */}
       {classement.length > 0 && (
-        <table border="1" cellPadding="8" style={{ marginTop: "1rem" }}>
-          <thead>
-            <tr>
-              <th>Position</th>
-              <th>Équipe</th>
-              <th>Points</th>
-              <th>Matchs joués</th>
-              <th>Victoires</th>
-              <th>Défaites</th>
-              <th>Nuls</th>
-              <th>Différence de buts</th>
-            </tr>
-          </thead>
-          <tbody>
-            {classement.map((equipe, index) => (
-              <tr key={equipe.equipeId}>
-                <td>{index + 1}</td>
-                <td>{equipe.nom}</td>
-                <td>{equipe.points}</td>
-                <td>{equipe.matchsJoues}</td>
-                <td>{equipe.victoires}</td>
-                <td>{equipe.defaites}</td>
-                <td>{equipe.nuls}</td>
-                <td>{equipe.diff}</td>
+        <div style={styles.tableWrapper}>
+          <table style={styles.table}>
+            <thead>
+              <tr>
+                <th style={styles.th}>Position</th>
+                <th style={styles.th}>Équipe</th>
+                <th style={styles.th}>Points</th>
+                <th style={styles.th}>Matchs joués</th>
+                <th style={styles.th}>Victoires</th>
+                <th style={styles.th}>Défaites</th>
+                <th style={styles.th}>Nuls</th>
+                <th style={styles.th}>Diff. de buts</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {classement.map((equipe, index) => (
+                <tr key={equipe.equipeId}>
+                  <td style={styles.td}>{index + 1}</td>
+                  <td style={styles.td}>{equipe.nom}</td>
+                  <td style={styles.td}>{equipe.points}</td>
+                  <td style={styles.td}>{equipe.matchsJoues}</td>
+                  <td style={styles.td}>{equipe.victoires}</td>
+                  <td style={styles.td}>{equipe.defaites}</td>
+                  <td style={styles.td}>{equipe.nuls}</td>
+                  <td style={styles.td}>{equipe.diff}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );

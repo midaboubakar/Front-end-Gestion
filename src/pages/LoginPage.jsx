@@ -11,13 +11,12 @@ export default function LoginPage({ onLogin }) {
   const [password, setPassword] = useState("");
 
   // Changer la langue entre 'fr' et 'en'
-  const toggleLanguage = () => {
+  const toggleLanguage = (e) => {
+    e.preventDefault(); // Empêche le submit ou rechargement
     const nextLang = i18n.language === "fr" ? "en" : "fr";
-    console.log("Changement langue vers", nextLang);
     i18n.changeLanguage(nextLang);
   };
 
-  // Gestion du submit du formulaire
   async function handleSubmit(e) {
     e.preventDefault();
     try {
@@ -33,9 +32,9 @@ export default function LoginPage({ onLogin }) {
     <div className="login-wrapper">
       <form className="login-form" onSubmit={handleSubmit}>
         {/* Bouton pour changer la langue */}
-        <button onClick={toggleLanguage}>
-        {i18n.language === 'fr' ? 'English' : 'Français'}
-      </button>
+        <button onClick={toggleLanguage} type="button" style={{ marginBottom: '1rem' }}>
+          {i18n.language === 'fr' ? 'English' : 'Français'}
+        </button>
 
         <h2>{t("login")}</h2>
 

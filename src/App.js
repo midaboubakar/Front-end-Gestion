@@ -6,6 +6,7 @@ import ForgotPassword from "./pages/ForgotPasswordPage";
 import ChampionnatPage from "./pages/ChampionnatPage";
 import ClassementsPage from "./pages/ClassementsPage";
 import EquipesPage from "./pages/EquipesPage";
+import './i18n/i18n';
    /*import JoueursPage from "./pages/JoueursPage";*/
 import MatchsPage from "./pages/MatchsPage";
 import NotFoundPage from "./pages/NotFoundPage";

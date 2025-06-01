@@ -9,26 +9,31 @@ export default function HomePage() {
     getChampionnats().then(setList);
   }, []);
 
-  // 🎨 Styles en ligne
   const styles = {
     container: {
-      padding: "1rem",
-      fontFamily: "Arial, sans-serif",
+      padding: "2rem",
+      maxWidth: "1200px",
+      margin: "0 auto",
+      fontFamily: "'Segoe UI', sans-serif",
+      textAlign: "center",
     },
     title: {
-      fontSize: "1.8rem",
-      marginBottom: "1rem",
+      fontSize: "2.2rem",
+      fontWeight: "bold",
+      marginBottom: "2rem",
+      //color: "#4a6fa5",
     },
     grid: {
-      display: "flex",
-      flexWrap: "wrap",
-      gap: "1rem",
-    }
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+      gap: "1.5rem",
+      justifyContent: "center",
+    },
   };
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.title}>🏆 Championnat(s)</h2>
+      <h2 style={styles.title}>🏆 Liste des Championnats</h2>
       <div style={styles.grid}>
         {list.map((c) => (
           <ChampionnatCard
