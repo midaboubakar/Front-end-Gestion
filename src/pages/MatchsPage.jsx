@@ -5,8 +5,10 @@ export default function MatchsPage() {
   const [matchs, setMatchs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
-  const selectedChampId = "64f377aaa963d56fc32d04dc"; // Remplace avec l’ID réel
+  const selectedChampId = "64f377aaa963d56fc32d04dc"; // ID du championnat sélectionné
+  const headerColor = "#1f2e57"; // couleur principale du thème
 
   useEffect(() => {
     async function fetchMatchs() {
@@ -30,50 +32,62 @@ export default function MatchsPage() {
 
   const styles = {
     container: {
-      padding: "2rem",
-      maxWidth: "900px",
+      padding: "4rem 2rem",
+      maxWidth: "1200px",
       margin: "0 auto",
       fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "flex-start", // ✅ le contenu commence en haut
-      gap: "1.5rem", // ✅ espacement entre les blocs
       minHeight: "100vh",
+      color: "#fff",
     },
     title: {
-      fontSize: "2rem",
+      fontSize: "2.5rem",
       fontWeight: "bold",
       textAlign: "center",
+      marginBottom: "2rem",
+    },
+    grid: {
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+      gap: "2rem",
     },
     matchCard: {
-      border: "1px solid #ddd",
-      borderRadius: "12px",
-      padding: "1rem 1.5rem",
-      width: "100%",
-      backgroundColor: "#fff",
-      boxShadow: "0 4px 10px rgba(0,0,0,0.05)",
+      borderRadius: "16px",
+      padding: "1.5rem",
+      backgroundColor: "transparent", // pas de fond blanc
+      border: `1px solid ${headerColor}`,
+      color: "#eee",
+      boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+      transition: "all 0.3s ease",
+      cursor: "pointer",
+      textAlign: "center",
+    },
+    matchCardHover: {
+      backgroundColor: headerColor,
+      color: "#fff",
+      transform: "scale(1.03)",
     },
     matchTitle: {
-      fontSize: "1.2rem",
-      fontWeight: "600",
-      marginBottom: "0.5rem",
-      color: "#34495e",
+      fontSize: "1.5rem",
+      fontWeight: "bold",
+      marginBottom: "1rem",
     },
     matchInfo: {
       fontSize: "1rem",
-      margin: "0.25rem 0",
+      margin: "0.4rem 0",
     },
     error: {
       color: "#e74c3c",
       fontWeight: "bold",
+      textAlign: "center",
     },
     loading: {
       fontSize: "1.2rem",
+      textAlign: "center",
     },
     noMatch: {
       fontSize: "1rem",
-      color: "#555",
+      color: "#bbb",
+      textAlign: "center",
     },
   };
 
@@ -87,15 +101,27 @@ export default function MatchsPage() {
         <p style={styles.noMatch}>Aucun match trouvé pour ce championnat.</p>
       )}
 
-      {matchs.map((match) => (
-        <div key={match._id} style={styles.matchCard}>
-          <h3 style={styles.matchTitle}>{match.nom}</h3>
-          <p style={styles.matchInfo}>⚽ Équipe 1 : {match.equipe1?.nom}</p>
-          <p style={styles.matchInfo}>⚽ Équipe 2 : {match.equipe2?.nom}</p>
-          <p style={styles.matchInfo}>📅 Date : {new Date(match.date).toLocaleDateString()}</p>
-          <p style={styles.matchInfo}>🏟 Stade : {match.stade}</p>
-        </div>
-      ))}
+      <div style={styles.grid}>
+        {matchs.map((match, i) => (
+          <div
+            key={match._id}
+            style={{
+              ...styles.matchCard,
+              ...(hoveredIndex === i ? styles.matchCardHover : {}),
+            }}
+            onMouseEnter={() => setHoveredIndex(i)}
+            onMouseLeave={() => setHoveredIndex(null)}
+          >
+            <h3 style={styles.matchTitle}>{match.nom}</h3>
+            <p style={styles.matchInfo}>⚽ Équipe 1 : {match.equipe1?.nom}</p>
+            <p style={styles.matchInfo}>⚽ Équipe 2 : {match.equipe2?.nom}</p>
+            <p style={styles.matchInfo}>
+              📅 Date : {new Date(match.date).toLocaleDateString()}
+            </p>
+            <p style={styles.matchInfo}>🏟 Stade : {match.stade}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

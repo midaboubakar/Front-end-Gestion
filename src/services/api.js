@@ -69,17 +69,6 @@ export async function addMatch(championnatId, data) {
   return res.data;
 }
 
-/* ------------------- JOUEURS ------------------- */
-export async function getJoueurs(equipeId) {
-  const res = await API.get(`/joueurs?equipe=${equipeId}`);
-  return res.data;
-}
-
-export async function addJoueur(equipeId, data) {
-  const res = await API.post("/joueurs", { ...data, equipeId });
-  return res.data;
-}
-
 /*---------sign up ----------------- */
 export async function signup(email, password) {
   const res = await fetch("http://localhost:3000/api/signup", {

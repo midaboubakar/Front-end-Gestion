@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getChampionnats } from "../services/api";
+import { API_URL } from "../components/config";
 
 export default function ChampionnatPage() {
   const [championnats, setChampionnats] = useState([]);
@@ -8,102 +8,115 @@ export default function ChampionnatPage() {
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
   useEffect(() => {
-    getChampionnats()
-      .then((data) => {
+    const fetchChampionnats = async () => {
+      try {
+        const response = await fetch(`${API_URL}/championships`);
+
+        if (!response.ok) {
+          throw new Error("Erreur réseau : " + response.statusText);
+        }
+
+        const data = await response.json();
         setChampionnats(data.slice(0, 5));
-        setLoading(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error("Erreur de chargement :", err);
         setError("Erreur de chargement des championnats.");
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchChampionnats();
   }, []);
+
+  const headerColor = "#1f2e57"; // couleur du header
 
   const styles = {
     container: {
-      padding: "2rem",
-      maxWidth: "800px",
-      margin: "2rem auto",
-      borderRadius: "16px",
+      padding: "4rem 2rem",
+      maxWidth: "1200px",
+      margin: "0 auto",
       fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "flex-start",
       minHeight: "100vh",
-      //backgroundColor: "#1f2937", // ✅ fond foncé pour texte blanc
       color: "#fff",
-      boxShadow: "0 8px 20px rgba(0, 0, 0, 0.1)", // ✅ même style que les autres pages
     },
     mainTitle: {
-      fontSize: "2.5rem",
+      fontSize: "3rem",
       fontWeight: "bold",
       textAlign: "center",
       color: "#fff",
       marginBottom: "1rem",
     },
     subTitle: {
-      fontSize: "1.5rem",
-      fontWeight: "bold",
+      fontSize: "1.75rem",
       textAlign: "center",
-      color: "#f1f1f1",
-      marginBottom: "1.5rem",
+      color: "#ddd",
+      marginBottom: "2rem",
     },
-    list: {
-      width: "100%",
-      listStyle: "none",
-      padding: 0,
+    grid: {
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+      gap: "2rem",
     },
-    listItem: {
-      padding: "1rem",
-      marginBottom: "1rem",
-      borderRadius: "10px",
+    card: {
+      padding: "2rem",
+      borderRadius: "16px",
       backgroundColor: "#f8f9fa",
       color: "#333",
-      boxShadow: "inset 0 0 5px rgba(0,0,0,0.05)",
+      boxShadow: "0 6px 15px rgba(0, 0, 0, 0.1)",
       cursor: "pointer",
       fontWeight: 600,
-      transition: "background-color 0.3s",
       textAlign: "center",
+      transition: "transform 0.3s ease, background-color 0.3s ease, color 0.3s",
     },
     hover: {
-      backgroundColor: "#e9ecef",
+      backgroundColor: headerColor,
+      color: "#fff",
+      transform: "scale(1.03)",
     },
     error: {
       color: "#e74c3c",
       fontWeight: "bold",
+      textAlign: "center",
     },
   };
 
-  if (loading) return <div style={styles.container}>Chargement en cours...</div>;
-  if (error)
+  if (loading) {
+    return (
+      <div style={styles.container}>
+        <h2 style={styles.subTitle}>Chargement en cours...</h2>
+      </div>
+    );
+  }
+
+  if (error) {
     return (
       <div style={styles.container}>
         <p style={styles.error}>{error}</p>
       </div>
     );
+  }
 
   return (
     <div style={styles.container}>
       <h1 style={styles.mainTitle}>Championnats</h1>
-      <h2 style={styles.subTitle}>🏆 Liste des championnats</h2>
+      <h2 style={styles.subTitle}>🏆 Les 5 principaux championnats</h2>
 
-      <ul style={styles.list}>
+      <div style={styles.grid}>
         {championnats.map((c, i) => (
-          <li
-            key={c._id}
+          <div
+            key={c._id || i}
             style={{
-              ...styles.listItem,
+              ...styles.card,
               ...(hoveredIndex === i ? styles.hover : {}),
             }}
             onMouseEnter={() => setHoveredIndex(i)}
             onMouseLeave={() => setHoveredIndex(null)}
           >
-            {c.nom}
-          </li>
+            {c.nom || "Nom indisponible"}
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

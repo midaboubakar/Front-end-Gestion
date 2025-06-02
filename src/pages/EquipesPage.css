@@ -1,3 +1,12 @@
+:root {
+  --primary-color: #1f2e57;      /* Couleur du header (ex. bleu foncé) */
+  --text-color: #ffffff;         /* Texte principal */
+  --text-light: #bdc3c7;         /* Texte secondaire */
+  --error-color: #e74c3c;        /* Rouge pour les erreurs */
+  --button-bg: var(--primary-color);
+  --button-hover: #2e3e70;       /* Hover un peu plus clair */
+}
+
 .equipes-container {
   min-height: 100vh;
   display: flex;
@@ -7,8 +16,8 @@
   padding: 2rem;
   max-width: 960px;
   margin: 0 auto;
- /* background-color: #1c1c1e;*/
-  color: #ffffff;
+  background-color: transparent;
+  color: var(--text-color);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
 }
@@ -17,18 +26,19 @@
   font-size: 2.4rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
+  color: var(--text-color);
 }
 
 .equipes-loading,
 .equipes-empty {
   font-size: 1.2rem;
-  color: #bdc3c7;
+  color: var(--text-light);
   margin-top: 1rem;
 }
 
 .equipes-error {
   font-size: 1.2rem;
-  color: #e74c3c;
+  color: var(--error-color);
   font-weight: 600;
 }
 
@@ -36,17 +46,63 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1rem;
+  gap: 1.5rem;
   margin-top: 2rem;
 }
 
+/* Carte d'équipe (transparente) */
+.equipe-card {
+  background: transparent;
+  color: var(--text-color);
+  padding: 1rem 1.2rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+  width: 250px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.equipe-card:hover {
+  transform: scale(1.03);
+  border-color: var(--primary-color);
+}
+
+/* Bouton commun */
+.button {
+  background-color: var(--button-bg);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+.button:hover {
+  background-color: var(--button-hover);
+}
+
 /* Responsive */
-@media (max-width: 600px) {
-  .equipes-title {
-    font-size: 1.8rem;
+@media (max-width: 768px) {
+  .equipe-card {
+    width: 100%;
+    max-width: 90%;
   }
 
+  .equipes-title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
   .equipes-container {
     padding: 1rem;
+  }
+
+  .equipes-title {
+    font-size: 1.6rem;
   }
 }
