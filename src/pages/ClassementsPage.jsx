@@ -14,22 +14,25 @@ export default function ClassementsPage() {
         const data = await getChampionnats();
         setChampionnats(data.slice(0, 5));
       } catch (err) {
-        setError("Erreur de chargement des championnats");
+        setError("Erreur de chargement des championnats.");
       }
     }
     fetchChampionnats();
   }, []);
 
   useEffect(() => {
-    if (!selectedChampionnatId) return;
+    if (!selectedChampionnatId) {
+      setClassement([]);
+      return;
+    }
     async function fetchClassement() {
       setLoading(true);
+      setError("");
       try {
         const data = await getClassement(selectedChampionnatId);
         setClassement(data);
-        setError("");
       } catch {
-        setError("Erreur lors du chargement du classement");
+        setError("Erreur lors du chargement du classement.");
       } finally {
         setLoading(false);
       }
@@ -37,54 +40,90 @@ export default function ClassementsPage() {
     fetchClassement();
   }, [selectedChampionnatId]);
 
+  const headerColor = "#1f2e57";
+
   const styles = {
     container: {
       padding: "2rem",
       maxWidth: "960px",
-      margin: "0 auto",
-      fontFamily: "'Segoe UI', sans-serif",
+      margin: "2rem auto",
+      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       gap: "1rem",
+      //backgroundColor: "#121212",
+      color: "#fff",
+      borderRadius: "16px",
     },
     title: {
-      fontSize: "2rem",
-      fontWeight: "bold",
-      marginBottom: "0.5rem",
+      fontSize: "2.25rem",
+      fontWeight: "700",
+      color: "#fff",
+    },
+    label: {
+      alignSelf: "flex-start",
+      marginBottom: "0.25rem",
+      fontWeight: "600",
+      color: "#fff",
+      fontSize: "1rem",
     },
     select: {
-      padding: "0.5rem 1rem",
+      padding: "0.6rem 1rem",
       fontSize: "1rem",
       borderRadius: "8px",
-      border: "1px solid #ccc",
+      border: `1.5px solid ${headerColor}`,
+      backgroundColor: "#1c1c1c",
+      color: "#fff",
+      outline: "none",
+      width: "100%",
+      maxWidth: "320px",
+      marginBottom: "1rem",
     },
     tableWrapper: {
       width: "100%",
       overflowX: "auto",
-      marginTop: "2rem",
+      marginTop: "1rem",
       borderRadius: "12px",
-      boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-      backgroundColor: "#fff",
+      boxShadow: "0 4px 14px rgba(255,255,255,0.05)",
+      backgroundColor: "#1c1c1c",
     },
     table: {
       width: "100%",
       borderCollapse: "collapse",
+      minWidth: "600px",
+      color: "#fff",
     },
     th: {
-      backgroundColor: "#f1f1f1",
-      padding: "12px",
-      fontWeight: "bold",
-      borderBottom: "1px solid #ddd",
+      backgroundColor: headerColor,
+      color: "#fff",
+      padding: "12px 15px",
+      fontWeight: "700",
+      borderBottom: "2px solid #31437d",
       textAlign: "left",
     },
     td: {
-      padding: "10px",
-      borderBottom: "1px solid #eee",
+      padding: "12px 15px",
+      borderBottom: "1px solid #2a2a2a",
+      color: "#eee",
+    },
+    trHover: {
+      backgroundColor: "#2c2c2c",
+      transition: "background-color 0.3s",
     },
     error: {
       color: "#e74c3c",
-      fontWeight: "bold",
+      fontWeight: "700",
+    },
+    loading: {
+      fontSize: "1.2rem",
+      color: "#aaa",
+      fontWeight: "600",
+    },
+    emptyMsg: {
+      fontSize: "1rem",
+      color: "#888",
+      fontStyle: "italic",
     },
   };
 
@@ -92,7 +131,11 @@ export default function ClassementsPage() {
     <div style={styles.container}>
       <h2 style={styles.title}>📊 Classements</h2>
 
+      <label htmlFor="championnat-select" style={styles.label}>
+        Sélectionnez un championnat :
+      </label>
       <select
+        id="championnat-select"
         value={selectedChampionnatId}
         onChange={(e) => setSelectedChampionnatId(e.target.value)}
         style={styles.select}
@@ -105,8 +148,11 @@ export default function ClassementsPage() {
         ))}
       </select>
 
-      {loading && <p>Chargement du classement...</p>}
+      {loading && <p style={styles.loading}>Chargement du classement...</p>}
       {error && <p style={styles.error}>{error}</p>}
+      {!loading && classement.length === 0 && selectedChampionnatId && !error && (
+        <p style={styles.emptyMsg}>Aucun classement disponible pour ce championnat.</p>
+      )}
 
       {classement.length > 0 && (
         <div style={styles.tableWrapper}>
@@ -125,7 +171,11 @@ export default function ClassementsPage() {
             </thead>
             <tbody>
               {classement.map((equipe, index) => (
-                <tr key={equipe.equipeId}>
+                <tr
+                  key={equipe.equipeId || index}
+                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#2a2a2a")}
+                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+                >
                   <td style={styles.td}>{index + 1}</td>
                   <td style={styles.td}>{equipe.nom}</td>
                   <td style={styles.td}>{equipe.points}</td>
